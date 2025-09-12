@@ -98,7 +98,7 @@ function parseCSV(text: string): SalesRecord[] {
 
 
 export async function GET() {
-  const base = path.join(process.cwd(), "data", "raw");
+  const base = path.join(process.cwd(), "public", "data");
   const files: Record<CompanyName, string> = {
     Amazon: "Amazon.csv",
     eBay: "eBay.csv",
