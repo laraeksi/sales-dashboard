@@ -2,7 +2,6 @@
 
 **Live demo (Vercel):** https://www.necladerinlaraesales.com  
 **Repository:** https://github.com/laraeksi/sales-dashboard  
-![CI](https://github.com/laraeksi/sales-dashboard/actions/workflows/test.yml/badge.svg)
 
 Interactive sales dashboard for exploring multi-year company data with filters, KPIs and responsive charts.  
 Data is loaded from **CSV** via a lightweight **Next.js API route** and visualised with **Recharts**.
