@@ -1,6 +1,6 @@
 # Sales Analytics Dashboard (Next.js + TypeScript)
 
-**Live demo (Vercel):** https://www.necladerinlaraesales.com  
+**Live demo (Vercel):** [https://www.necladerinlaraesales.com  ](https://sales-dashboard-dkjkafte0-necla-derin-laras-projects.vercel.app)
 **Repository:** https://github.com/laraeksi/sales-dashboard  
 
 Interactive sales dashboard for exploring multi-year company data with filters, KPIs and responsive charts.  
