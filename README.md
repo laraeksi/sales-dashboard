@@ -1,47 +1,89 @@
-#Sales Dashboard
-An interactive sales analytics dashboard built with **Next.js**, **Tailwind CSS**, and **Recharts**. It visualises sales data (in billions of USD) for Amazon, eBay, and Alibaba from 2022 to 2024.
+# Sales Analytics Dashboard (Next.js + TypeScript)
 
-##Features
-Interactive bar charts with `Recharts`
-Company selector dropdown (Amazon, eBay, Alibaba)
-Sales threshold filter
-Responsive and clean Tailwind-styled layout
-Built using Next.js App Router and TypeScript
+**Live demo (Vercel):** [https://www.necladerinlaraesales.com  ](https://sales-dashboard-dkjkafte0-necla-derin-laras-projects.vercel.app)
+**Repository:** https://github.com/laraeksi/sales-dashboard  
+
+Interactive sales dashboard for exploring multi-year company data with filters, KPIs and responsive charts.  
+Data is loaded from **CSV** via a lightweight **Next.js API route** and visualised with **Recharts**.
+
+## Features
+- Company selector (**Amazon / eBay / Alibaba**)
+- Min-sales threshold filter
+- Sort by year (↑ / ↓)
+- KPIs: **Total Sales**, **Last Year value**, **YoY % change**
+- Responsive bar chart with tooltip & legend
+- Typed data layer (TypeScript types + custom hook)
+- Pure metric helpers with unit tests (Vitest)
+
+## Tech Stack
+- **Next.js (App Router)**, **React 18**, **TypeScript**
+- **Tailwind CSS** for styling
+- **Recharts** for data-vis
+- **Vitest** for unit tests
+
+## Project Structure
+app/
+api/sales/route.ts # CSV → JSON API (auto-detects delimiters/number formats)
+page.tsx # redirects/renders dashboard at /
+dashboard/page.tsx # (if kept) dashboard route
+globals.css, layout.tsx
+components/
+SalesChart.tsx
+lib/
+types.ts # CompanyName, SalesRecord, SalesMap
+metrics.ts # filter/sort/total/yoy (pure/tested)
+useSalesData.ts # fetch + UI state (company, threshold, sort)
+public/
+data/
+Amazon.csv
+eBay.csv
+Alibaba.csv
+
 
 ## Getting Started
-
-### 1.Clone the project
-
-```bash
-git clone https://github.com/yourusername/sales-dashboard.git
-cd sales-dashboard/sales-dashboard
-2. Install dependencies
-bash
-
 npm install
-3. Run the development server
-bash
-
 npm run dev
-Open your browser and go to:
-http://localhost:3000/dashboard
+# open http://localhost:3000  (root redirects to /dashboard if you kept that route)
+Tests
+npm run test          # one-off
+npm run test:watch    # watch mode
+Data & API
+Source data: CSV in public/data/.
+The parser auto-detects , vs ; delimiters and EU/US number formats (e.g. 22,1 → 22.1).
 
-Tech Stack
-Next.js
+Endpoint: GET /api/sales → returns:
 
-Tailwind CSS
+json
+{ "Amazon": [{ "year": 2019, "sales": 88.3 }, ...], "eBay": [...], "Alibaba": [...] }
+Deployment (Vercel)
+Hosted at https://www.necladerinlaraesales.com (custom domain on Vercel).
 
-Recharts
+CSVs are served from public/data/ so they’re available at runtime.
 
-TypeScript
+API route hints:
 
-Project Structure
-/app
-  ├── dashboard/page.tsx      → Renders the main dashboard
-  ├── layout.tsx              → Root layout
-  └── globals.css             → Tailwind styles
-/components
-  └── SalesChart.tsx          → Interactive chart component
+// app/api/sales/route.ts
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+// reads from: path.join(process.cwd(), "public", "data")
+CI (optional but recommended)
+Add this workflow at .github/workflows/test.yml to run unit tests on every push/PR:
 
-Data Source
-The sales figures are based on public financial summaries from Amazon, eBay, and Alibaba for 2022–2024.
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - run: npm run test
+Notes
+If the chart is blank, ensure the wrapper has a fixed height (e.g. className="h-[320px]") and that /api/sales returns arrays.
+
+You can access raw CSVs directly at /data/Amazon.csv, /data/eBay.csv, /data/Alibaba.csv.
+
+Licence
+MIT
